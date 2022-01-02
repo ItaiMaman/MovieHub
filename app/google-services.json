@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "857475947821",
+    "project_id": "itaifinalproject-8678f",
+    "storage_bucket": "itaifinalproject-8678f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857475947821:android:f7588ce53ec77be7ac47a4",
+        "android_client_info": {
+          "package_name": "com.example.moviepicker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857475947821-9og0as3u8ob2cju7ibpe8rv04jgpamu5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXvkfm4WZjNwiGVRhBCPqTadDCncbVLzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "857475947821-9og0as3u8ob2cju7ibpe8rv04jgpamu5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
