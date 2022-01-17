@@ -12,7 +12,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashScreen extends AppCompatActivity {
+
 
     ImageView iv_video;
     Animation anim_rotate;
@@ -27,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
         anim_rotate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_rotate);
 
         iv_video.startAnimation(anim_rotate);
-
+        //todo - action animation (anddddd action)
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -36,5 +39,6 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
             }
         }, 3000);
+
     }
 }

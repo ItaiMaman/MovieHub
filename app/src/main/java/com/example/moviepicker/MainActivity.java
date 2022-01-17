@@ -1,8 +1,14 @@
 package com.example.moviepicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 public class MainActivity extends AppCompatActivity {
     //todo - what are the entities of the project
@@ -13,5 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
         //todo - develop the database (firebase)
         //todo - api
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 }
