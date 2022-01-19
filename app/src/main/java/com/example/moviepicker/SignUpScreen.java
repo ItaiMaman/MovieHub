@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpScreen extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class SignUpScreen extends AppCompatActivity {
     Button btn_create;
     FirebaseAuth firebaseAuth;
     ProgressDialog progressDialog;
-
+    String email, password, confirm, username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +37,34 @@ public class SignUpScreen extends AppCompatActivity {
         et_password = findViewById(R.id.et_password);
         et_confirm = findViewById(R.id.et_confirm);
         btn_create = findViewById(R.id.btn_create);
+        progressDialog = new ProgressDialog(this);
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = et_email.getText().toString();
-                String password = et_password.getText().toString();
-                String confirm = et_confirm.getText().toString();
-                if(validEmail(email) && validPassword(password) && passwordsMatch(password, confirm)){
+
+                username = et_username.getText().toString();
+                email = et_email.getText().toString();
+                password = et_password.getText().toString();
+                confirm = et_confirm.getText().toString();
+
+                if (validEmail(email) && validPassword(password) && passwordsMatch(password, confirm)) {
                     registerUserToFirebase(email, password);
                 }
-                else if(!validEmail(email)){
+                else if (!validEmail(email)) {
                     mySnackbar("Enter a valid email address");
                 }
-                else if(!validPassword(password)){
+                else if (!validPassword(password)) {
                     mySnackbar("Enter a valid password. Password must be more than 8 characters");
                 }
-                else if(passwordsMatch(password, confirm) == false){
+                else if (passwordsMatch(password, confirm) == false) {
                     mySnackbar("Passwords do not match");
                 }
             }
         });
     }
 
-    private void registerUserToFirebase(String email, String password){
+    private void registerUserToFirebase(String email, String password) {
         progressDialog.setMessage("Registering user...");
         progressDialog.show();
 
@@ -68,11 +73,20 @@ public class SignUpScreen extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
                 if (task.isSuccessful()) {
-                    mySnackbar("User created. Please login");
-                    Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
-                    startActivity(intent);
-                }
-                else{
+
+                    FirebaseDatabase.getInstance().getReference("UserData").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(username).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("snackbar", "User created successfully");
+                            startActivity(intent);
+
+                        }
+                    });
+
+
+                } else {
                     mySnackbar(task.getException().getMessage());
                 }
             }
@@ -81,23 +95,23 @@ public class SignUpScreen extends AppCompatActivity {
 
     }
 
-    private boolean validEmail(String email){
+    private boolean validEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private boolean validPassword(String password){
+    private boolean validPassword(String password) {
         boolean valid = true;
-        if(password.isEmpty() || password.length()<8) valid = false;
+        if (password.isEmpty() || password.length() < 8) valid = false;
         return valid;
     }
 
-    private boolean passwordsMatch(String password, String confirm){
+    private boolean passwordsMatch(String password, String confirm) {
         boolean match = false;
-        if(confirm.equals(password)) match = true;
+        if (confirm.equals(password)) match = true;
         return match;
     }
 
-    public void mySnackbar(String message){
+    public void mySnackbar(String message) {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
         snackbar.show();
     }

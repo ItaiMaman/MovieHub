@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {
@@ -19,7 +20,7 @@ public class SplashScreen extends AppCompatActivity {
 
     ImageView iv_video;
     Animation anim_rotate;
-
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -34,11 +35,17 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreen.this, LoginScreen.class);
-                startActivity(i);
-                finish();
+                if (FirebaseAuth.getInstance().getCurrentUser() != null)
+                    intent = new Intent(SplashScreen.this, MainActivity.class);
+
+                else
+                    intent = new Intent(SplashScreen.this, LoginScreen.class);
+
+                startActivity(intent);
+
             }
         }, 3000);
 
     }
+
 }

@@ -52,13 +52,13 @@ public class LoginScreen extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog.setMessage("Logging in...");
-                progressDialog.show();
 
                 String email = et_email.getText().toString();
                 String password = et_password.getText().toString();
 
                 if(validEmail(email) && validPassword(password)){
+                    progressDialog.setMessage("Logging in...");
+                    progressDialog.show();
                     firebaseAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(LoginScreen.this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -75,9 +75,11 @@ public class LoginScreen extends AppCompatActivity {
                             });
                 }
                 else if(!validEmail(email)){
+                    progressDialog.dismiss();
                     mySnackbar("Invalid email");
                 }
                 else if(!validPassword(password)){
+                    progressDialog.dismiss();
                     mySnackbar("Invalid password");
                 }
             }
