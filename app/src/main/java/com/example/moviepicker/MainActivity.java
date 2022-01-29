@@ -7,30 +7,37 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.moviepicker.api.MovieService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
-    //todo - what are the entities of the project
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra("snackbar");
+        Intent i = getIntent();
+        String message = i.getStringExtra("snackbar");
         if(message != null){
             mySnackbar(message);
         }
 
-        //todo - develop the database (firebase)
         //todo - api
+        //todo - store in realtime database
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
     }
 
     public void mySnackbar(String message){

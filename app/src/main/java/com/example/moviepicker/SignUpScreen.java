@@ -19,12 +19,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpScreen extends AppCompatActivity {
-
     EditText et_username, et_email, et_password, et_confirm;
     Button btn_create;
     FirebaseAuth firebaseAuth;
     ProgressDialog progressDialog;
     String email, password, confirm, username;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +72,13 @@ public class SignUpScreen extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
-                if (task.isSuccessful()) {
+                if (task.isSuccessful()){
 
                     FirebaseDatabase.getInstance().getReference("UserData").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(username).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.putExtra("snackbar", "User created successfully");
                             startActivity(intent);
 
@@ -86,7 +86,8 @@ public class SignUpScreen extends AppCompatActivity {
                     });
 
 
-                } else {
+                }
+                else{
                     mySnackbar(task.getException().getMessage());
                 }
             }

@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_login"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="150dp"
         android:fontFamily="sans-serif-light"
         android:hint="Email"
         android:inputType="textPersonName" />
@@ -82,15 +82,5 @@
         android:fontFamily="sans-serif-light"
         android:text="Don't have an account? Sign up"
         android:textColor="#0000ff" />
-
-    <CheckBox
-        android:id="@+id/cb_rememberme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_password"
-        android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Remember Me"
-        android:layout_alignStart="@id/et_password"/>
 
 </RelativeLayout>

@@ -25,14 +25,12 @@ public class LoginScreen extends AppCompatActivity {
     EditText et_email, et_password;
     TextView tv_forgot, tv_donthaveaccount;
     Button btn_login;
-    CheckBox cb_rememberme;
     FirebaseAuth firebaseAuth;
-
     Dialog d;
     EditText et_dialogemail;
     Button btn_dialogsend;
-
     ProgressDialog progressDialog;
+    String email, password;
 
 
     @Override
@@ -47,14 +45,13 @@ public class LoginScreen extends AppCompatActivity {
         tv_forgot = findViewById(R.id.tv_forgot);
         tv_donthaveaccount = findViewById(R.id.tv_donthaveaccount);
         btn_login = findViewById(R.id.btn_login);
-        cb_rememberme = findViewById(R.id.cb_rememberme);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String email = et_email.getText().toString();
-                String password = et_password.getText().toString();
+                email = et_email.getText().toString();
+                password = et_password.getText().toString();
 
                 if(validEmail(email) && validPassword(password)){
                     progressDialog.setMessage("Logging in...");
@@ -116,7 +113,7 @@ public class LoginScreen extends AppCompatActivity {
             public void onClick(View view) {
                 progressDialog.setMessage("Sending...");
                 progressDialog.show();
-                String email = et_dialogemail.getText().toString();
+                email = et_dialogemail.getText().toString();
 
                 if(validEmail(email)){
                     firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
