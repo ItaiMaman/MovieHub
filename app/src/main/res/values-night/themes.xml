@@ -12,5 +12,21 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:textViewStyle">@style/QuicksandTextViewStyle</item>
+        <item name="android:buttonStyle">@style/QuicksandButtonStyle</item>
+        <item name="android:editTextStyle">@style/QuicksandEditTextStyle</item>
     </style>
+
+    <style name="QuicksandTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/quicksand_medium</item>
+    </style>
+
+    <style name="QuicksandButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/quicksand_medium</item>
+    </style>
+
+    <style name="QuicksandEditTextStyle" parent="android:Widget.EditText">
+        <item name="android:fontFamily">@font/quicksand_medium</item>
+    </style>
+
 </resources>
