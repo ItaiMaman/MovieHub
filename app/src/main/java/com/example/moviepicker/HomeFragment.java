@@ -14,31 +14,47 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.moviepicker.api.HomeViewModel;
 import com.example.moviepicker.api.MovieService;
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
+import com.yuyakaido.android.cardstackview.CardStackListener;
+import com.yuyakaido.android.cardstackview.CardStackView;
+import com.yuyakaido.android.cardstackview.Direction;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
 
     HomeViewModel viewModel;
+    CardStackView cardStackView;
+    CardStackLayoutManager layoutManager;
+    CardsAdapter adapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(HomeViewModel.class);
+        cardStackView = view.findViewById(R.id.csv);
+
+        adapter = new CardsAdapter(getContext());
+        layoutManager = new CardStackLayoutManager(requireContext());
+        layoutManager.setDirections(Direction.HORIZONTAL);
+        layoutManager.setCanScrollVertical(false);
+        cardStackView.setAdapter(adapter);
+        cardStackView.setLayoutManager(layoutManager);
 
         viewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<Movies>() {
             @Override
             public void onChanged(Movies movies) {
                 if(movies != null){
-                    for(Movies.Movie m : movies.getMovies())
-                        Log.d("tag", m.getTitle());
+                    adapter.setMovies(movies.getMovies());
                 }
             }
         });
+
+
     }
 
     public HomeFragment() { }

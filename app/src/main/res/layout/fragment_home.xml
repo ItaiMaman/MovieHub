@@ -6,49 +6,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
-    <TextView
-        android:id="@+id/tv_greeting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Welcome, user!"
-        android:textSize="36dp"
-        android:gravity="center"/>
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/TabLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_greeting"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:background="@drawable/tab_background"
         app:tabGravity="center"
-        android:layout_centerHorizontal="true"
         app:tabIndicator="@drawable/tab_indicator"
+        app:tabIndicatorAnimationDuration="500"
         app:tabIndicatorAnimationMode="elastic"
         app:tabIndicatorGravity="stretch"
-        app:tabSelectedTextColor="@color/white"
-        android:layout_marginTop="10dp"
-        app:tabIndicatorAnimationDuration="500">
+        app:tabSelectedTextColor="@color/white">
 
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="popular"/>
+            android:text="popular" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="top rated"/>
+            android:text="top rated" />
 
     </com.google.android.material.tabs.TabLayout>
 
 
-
     <com.yuyakaido.android.cardstackview.CardStackView
+        android:id="@+id/csv"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_below="@id/TabLayout" />
+        android:layout_below="@id/TabLayout"
+        android:layout_marginTop="20dp" />
 
 
 </RelativeLayout>

@@ -7,15 +7,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.moviepicker.api.MovieService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = getIntent();
         String message = i.getStringExtra("snackbar");
         if(message != null){
-            mySnackbar(message);
+            mySnackBar(message);
         }
 
         //todo - api
@@ -40,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void mySnackbar(String message){
+    public void mySnackBar(String message){
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
         snackbar.show();
     }

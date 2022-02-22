@@ -1,6 +1,8 @@
 package com.example.moviepicker.api;
 
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -27,14 +29,14 @@ public class MovieService {
 
     private static MovieApi movieApi = retrofit.create(MovieApi.class);
 
-    public static MovieApi getMovieApi(){
+    public static MovieApi getMovieApi() {
         return movieApi;
     }
-
 
     private static OkHttpClient provideOkHttp(){
         return new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
+                    @NonNull
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();

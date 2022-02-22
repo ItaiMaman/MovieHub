@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpScreen extends AppCompatActivity {
@@ -52,13 +51,13 @@ public class SignUpScreen extends AppCompatActivity {
                     registerUserToFirebase(email, password);
                 }
                 else if (!validEmail(email)) {
-                    mySnackbar("Enter a valid email address");
+                    mySnackBar("Enter a valid email address");
                 }
                 else if (!validPassword(password)) {
-                    mySnackbar("Enter a valid password. Password must be more than 8 characters");
+                    mySnackBar("Enter a valid password. Password must be more than 8 characters");
                 }
-                else if (passwordsMatch(password, confirm) == false) {
-                    mySnackbar("Passwords do not match");
+                else if (!passwordsMatch(password, confirm)) {
+                    mySnackBar("Passwords do not match");
                 }
             }
         });
@@ -88,7 +87,7 @@ public class SignUpScreen extends AppCompatActivity {
 
                 }
                 else{
-                    mySnackbar(task.getException().getMessage());
+                    mySnackBar(task.getException().getMessage());
                 }
             }
         });
@@ -112,7 +111,7 @@ public class SignUpScreen extends AppCompatActivity {
         return match;
     }
 
-    public void mySnackbar(String message) {
+    public void mySnackBar(String message) {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
