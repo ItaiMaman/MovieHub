@@ -17,6 +17,10 @@ public class Movies {
     @SerializedName("total_pages")
     private Integer totalPages;
 
+    public Movies(List<Movie> movies) {
+        this.movies = movies;
+    }
+
     public Integer getPage() {
         return page;
     }

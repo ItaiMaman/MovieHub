@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_500">
+    android:background="@color/purple_500"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,7 +15,7 @@
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="530dp"
             android:foreground="@drawable/card_foreground"
             android:scaleType="centerCrop"
             android:src="@drawable/img" />
@@ -26,11 +28,13 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="-20dp"
             android:text="Speed Racer"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textColor="@color/white"
             android:textSize="35sp"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,34 +47,22 @@
                 android:id="@+id/genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_border"
+                android:backgroundTint="@color/gray"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
                 android:text="Action"
                 android:textColor="@color/gray"
-                android:backgroundTint="@color/gray"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="10dp"
-                android:background="@drawable/shape_border"
                 android:textSize="15sp" />
 
+
             <View
+                android:id="@+id/dot"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="15dp"
-                android:background="@drawable/shape_dot"
-                android:backgroundTint="@color/gray" />
-
-            <TextView
-                android:id="@+id/length"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2h 32min"
-                android:textColor="@color/gray"
-                android:textSize="15sp" />
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_gravity="center"
+                android:layout_toRightOf="@id/genre"
+                android:layout_centerVertical="true"
                 android:layout_marginHorizontal="15dp"
                 android:background="@drawable/shape_dot"
                 android:backgroundTint="@color/gray" />
@@ -79,28 +71,32 @@
                 android:id="@+id/release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7 December 2011"
+                android:text="2008"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/dot"
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
-        </LinearLayout>
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/review"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/title"
-            android:layout_alignStart="@id/title"
-            android:backgroundTint="@color/faded_gray"
-            android:paddingVertical="0dp"
-            android:paddingStart="5dp"
+            <TextView
+                android:id="@+id/review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/shape_round_square"
+                android:backgroundTint="@color/gray"
+                android:drawableStart="@drawable/ic_star"
+                android:drawablePadding="4dp"
+                android:drawableTint="@color/gold"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                android:text="10.0"
+                android:textColor="@color/white" />
 
-            android:text="8.9"
-            app:cornerRadius="10dp"
-            app:elevation="0dp"
-            app:icon="@drawable/ic_star"
-            app:iconPadding="3dp"
-            app:iconTint="@color/gold" />
+
+        </RelativeLayout>
+
 
 
     </RelativeLayout>

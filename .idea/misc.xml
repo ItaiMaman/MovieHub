@@ -10,6 +10,7 @@
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/drawable/ic_star.xml" value="0.1825" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/drawable/shape_border.xml" value="0.1825" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/drawable/shape_dot.xml" value="0.1825" />
+        <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/drawable/shape_round_square.xml" value="0.1825" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/drawable/splash_screen_shape.xml" value="0.2703125" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/drawable/tab_background.xml" value="0.1707236842105263" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/drawable/tab_indicator.xml" value="0.1707236842105263" />
@@ -18,9 +19,11 @@
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/activity_sign_up_screen.xml" value="0.2" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/forgot_dialog.xml" value="0.2" />
-        <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/fragment_library.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/fragment_popular.xml" value="0.16052631578947368" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/fragment_profile.xml" value="0.16052631578947368" />
+        <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/fragment_top_rated.xml" value="0.16052631578947368" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/item_card.xml" value="0.264" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/layout/splash_screen_background.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/itaim/AndroidStudioProjects/MoviePicker/app/src/main/res/menu/bottom_menu.xml" value="0.152" />

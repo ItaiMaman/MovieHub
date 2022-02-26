@@ -11,5 +11,8 @@ public interface MovieApi {
     @GET("movie/popular")
     Call<Movies> getPopularMovies(@Query("page") int page);
 
+    @GET("movie/top_rated")
+    Call<Movies> getTopRatedMovies(@Query("page") int page);
+
 
 }

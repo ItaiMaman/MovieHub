@@ -41,7 +41,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
         if(movies != null){
             Movies.Movie movie = movies.get(position);
             holder.title.setText(movie.getTitle());
-            SimpleDateFormat date = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+            SimpleDateFormat date = new SimpleDateFormat("yyyy", Locale.ENGLISH);
 
             @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -52,6 +52,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            holder.genre.setText(Genres.findByKey(movie.getGenreIds().get(0)));
 
             holder.review.setText(movie.getVoteAverage().toString());
             Glide.with(context).load(Constants.IMAGE_URL + movie.getPosterPath()).centerCrop().into(holder.img);
@@ -69,15 +71,13 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView title, genre, length, releaseDate;
+        TextView title, genre, releaseDate, review;
         ImageView img;
-        MaterialButton review;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             genre = itemView.findViewById(R.id.genre);
-            length = itemView.findViewById(R.id.length);
             releaseDate = itemView.findViewById(R.id.release_date);
             img = itemView.findViewById(R.id.image);
             review = itemView.findViewById(R.id.review);
@@ -85,7 +85,9 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
     }
 
     public void setMovies(List<Movies.Movie> movies){
+        int size = getItemCount();
         this.movies = movies;
-        notifyDataSetChanged();
+
+        notifyItemRangeInserted(size, getItemCount()-1);
     }
 }

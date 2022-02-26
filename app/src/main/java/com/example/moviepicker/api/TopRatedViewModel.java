@@ -10,18 +10,19 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.moviepicker.Movies;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeViewModel extends AndroidViewModel {
+public class TopRatedViewModel extends AndroidViewModel {
 
     MovieApi movieApi;
     private MutableLiveData<Movies> movies;
+    int page = 1;
 
-
-
-    public HomeViewModel(@NonNull Application application) {
+    public TopRatedViewModel(@NonNull Application application) {
         super(application);
 
         movieApi = MovieService.getMovieApi();
@@ -29,12 +30,28 @@ public class HomeViewModel extends AndroidViewModel {
         newRequest();
     }
 
+    public void addToMovies(Movies data){
+        Log.d("tag", "add");
+        if(data != null){
+            Log.d("tag", "not null");
+            page++;
+            if(movies.getValue() != null){
+                List<Movies.Movie> list = movies.getValue().getMovies();
+                list.addAll(data.getMovies());
+                movies.setValue(new Movies(list));
+            }
+            else{
+                movies.setValue(data);
+            }
+        }
+    }
+
     public void newRequest(){
-        Log.d("tag", "new Request");
-        movieApi.getPopularMovies(1).enqueue(new Callback<Movies>() {
+        Log.d("tag", "request");
+        movieApi.getTopRatedMovies(page).enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
-                movies.setValue(response.body());
+                addToMovies(response.body());
             }
 
             @Override
@@ -43,6 +60,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         });
     }
+
     public LiveData<Movies> getMovies() {
         return movies;
     }

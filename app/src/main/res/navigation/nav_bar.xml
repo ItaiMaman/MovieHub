@@ -6,10 +6,10 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
-        android:name="com.example.moviepicker.HomeFragment"
+        android:name="com.example.moviepicker.PopularFragment"
         android:id="@+id/homeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_popular" />
     <fragment
         android:name="com.example.moviepicker.LibraryFragment"
         android:id="@+id/libraryFragment"
