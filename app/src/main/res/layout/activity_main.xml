@@ -18,11 +18,12 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/friends"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_profile"
+                android:src="@drawable/ic_friends"
                 app:tint="@color/gray" />
 
             <com.google.android.material.tabs.TabLayout
@@ -53,9 +54,10 @@
             </com.google.android.material.tabs.TabLayout>
 
             <ImageView
+                android:id="@+id/profile"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_bookmark"
+                android:src="@drawable/ic_profile"
                 app:tint="@color/gray" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -68,5 +70,18 @@
         android:layout_height="match_parent"
         android:layout_below="@id/appbar"
         android:clipToPadding="false" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="25dp"
+        app:backgroundTint="@color/pink"
+        android:src="@drawable/ic_back"
+        android:tint="@color/white"
+        app:tint="@color/white"
+        />
 
 </RelativeLayout>

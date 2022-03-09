@@ -13,4 +13,5 @@
     <color name="faded_black">#BF000000</color>
     <color name="faded_gray">#66787878</color>
     <color name="gold"> #FFD700</color>
+    <color name="purple">#7f00ff</color>
 </resources>

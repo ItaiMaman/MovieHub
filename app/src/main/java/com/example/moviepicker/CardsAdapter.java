@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,7 +55,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
             holder.genre.setText(Genres.findByKey(movie.getGenreIds().get(0)));
 
             holder.review.setText(movie.getVoteAverage().toString());
-            Glide.with(context).load(Constants.IMAGE_URL + movie.getPosterPath()).centerCrop().into(holder.img);
+            Glide.with(context).load(Utils.IMAGE_URL + movie.getPosterPath()).centerCrop().into(holder.img);
         }
 
     }
@@ -89,5 +88,9 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
         this.movies = movies;
 
         notifyItemRangeInserted(size, getItemCount()-1);
+    }
+
+    public Movies.Movie getMovie(int position){
+        return movies.get(position);
     }
 }

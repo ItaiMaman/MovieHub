@@ -73,10 +73,9 @@ public class SignUpScreen extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (task.isSuccessful()){
 
-                    FirebaseDatabase.getInstance().getReference("UserData").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(username).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    new FirebaseSource().setUsername(username).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-
                             intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.putExtra("snackbar", "User created successfully");
                             startActivity(intent);

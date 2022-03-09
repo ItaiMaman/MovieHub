@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.moviepicker.FirebaseSource;
 import com.example.moviepicker.Movies;
 
 import java.util.List;
@@ -19,12 +20,14 @@ import retrofit2.Response;
 public class TopRatedViewModel extends AndroidViewModel {
 
     MovieApi movieApi;
+    FirebaseSource firebaseSource;
     private MutableLiveData<Movies> movies;
     int page = 1;
 
     public TopRatedViewModel(@NonNull Application application) {
         super(application);
 
+        firebaseSource = new FirebaseSource();
         movieApi = MovieService.getMovieApi();
         movies = new MutableLiveData<>();
         newRequest();
@@ -63,5 +66,13 @@ public class TopRatedViewModel extends AndroidViewModel {
 
     public LiveData<Movies> getMovies() {
         return movies;
+    }
+
+    public void saveMovie(Movies.Movie movie){
+        firebaseSource.saveMovie(movie);
+    }
+
+    public void deleteMovie(int id){
+        firebaseSource.deleteMovie(id);
     }
 }

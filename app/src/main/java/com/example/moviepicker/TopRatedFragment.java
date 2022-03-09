@@ -73,7 +73,14 @@ public class TopRatedFragment extends Fragment implements CardStackListener {
 
     @Override
     public void onCardSwiped(Direction direction) {
-
+        if (layoutManager.getTopPosition() % 20 == 18)
+            viewModel.newRequest();
+        if(direction == Direction.Right){
+            viewModel.saveMovie(adapter.getMovie(layoutManager.getTopPosition()-1));
+        }
+        else if(direction == Direction.Left){
+            viewModel.deleteMovie(adapter.getMovie(layoutManager.getTopPosition()-1).getId());
+        }
     }
 
     @Override
@@ -94,5 +101,9 @@ public class TopRatedFragment extends Fragment implements CardStackListener {
     @Override
     public void onCardDisappeared(View view, int position) {
 
+    }
+
+    public void rewind(){
+        cardStackView.rewind();
     }
 }

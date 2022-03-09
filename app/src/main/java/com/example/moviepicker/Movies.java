@@ -53,7 +53,28 @@ public class Movies {
         this.totalPages = totalPages;
     }
 
-    public class Movie {
+    public static class Movie {
+
+        public Movie() {
+        }
+
+        public Movie(String posterPath, Boolean adult, String overview, String releaseDate, List<Integer> genreIds, Integer id, String originalTitle, String originalLanguage, String title, String backdropPath, Double popularity, Integer voteCount, Boolean video, Double voteAverage, String push) {
+            this.posterPath = posterPath;
+            this.adult = adult;
+            this.overview = overview;
+            this.releaseDate = releaseDate;
+            this.genreIds = genreIds;
+            this.id = id;
+            this.originalTitle = originalTitle;
+            this.originalLanguage = originalLanguage;
+            this.title = title;
+            this.backdropPath = backdropPath;
+            this.popularity = popularity;
+            this.voteCount = voteCount;
+            this.video = video;
+            this.voteAverage = voteAverage;
+            this.push = push;
+        }
 
         @SerializedName("poster_path")
         private String posterPath;
@@ -96,6 +117,8 @@ public class Movies {
 
         @SerializedName("vote_average")
         private Double voteAverage;
+
+        private transient String push;
 
         public String getPosterPath() {
             return posterPath;
@@ -207,6 +230,14 @@ public class Movies {
 
         public void setVoteAverage(Double voteAverage) {
             this.voteAverage = voteAverage;
+        }
+
+        public String getPush() {
+            return push;
+        }
+
+        public void setPush(String push) {
+            this.push = push;
         }
     }
 

@@ -34,7 +34,7 @@
             android:textSize="35sp"
             android:textStyle="bold" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,6 +44,32 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_round_square"
+                android:backgroundTint="@color/gray"
+                android:drawablePadding="4dp"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                android:layout_marginVertical="3dp"
+                android:layout_gravity="center"
+                android:text="10.0"
+                android:textColor="@color/white"
+                app:drawableStartCompat="@drawable/ic_star"
+                app:drawableTint="@color/gold" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/genre"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="15dp"
+                android:background="@drawable/shape_dot"
+                android:backgroundTint="@color/gray" />
+
+            <TextView
                 android:id="@+id/genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,6 +77,7 @@
                 android:backgroundTint="@color/gray"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
+                android:layout_gravity="center"
                 android:text="Action"
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
@@ -72,30 +99,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2008"
+                android:layout_gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/dot"
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
 
 
-            <TextView
-                android:id="@+id/review"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/shape_round_square"
-                android:backgroundTint="@color/gray"
-                android:drawableStart="@drawable/ic_star"
-                android:drawablePadding="4dp"
-                android:drawableTint="@color/gold"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="3dp"
-                android:text="10.0"
-                android:textColor="@color/white" />
 
 
-        </RelativeLayout>
+
+        </LinearLayout>
 
 
 
