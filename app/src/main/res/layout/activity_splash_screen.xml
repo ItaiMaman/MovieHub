@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         app:srcCompat="@drawable/splash_screen_shape" />
 
-    <VideoView
+    <ImageView
         android:id="@+id/video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,5 +29,18 @@
         android:text="MovieHub"
         android:textColor="@color/black"
         android:textSize="48sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Powered by Nahalal"
+        android:textSize="36dp"
+        android:textColor="#80FFFFFF"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20sp"
+        />
+
 
 </RelativeLayout>

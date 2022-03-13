@@ -1,5 +1,7 @@
 package com.example.moviepicker;
 
+import android.provider.ContactsContract;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -15,9 +17,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FirebaseSource {
 
+    private static DatabaseReference rooms = FirebaseDatabase.getInstance().getReference("rooms");
     private DatabaseReference userdata;
     private FirebaseAuth auth;
 
@@ -77,6 +81,12 @@ public class FirebaseSource {
         });
         return movies;
 
+    }
+
+    public void createRoom(){
+        DatabaseReference roomRef = rooms.push();
+        Room room = new Room(roomRef.getKey(), auth.getUid());
+        roomRef.setValue(room);
     }
 }
 

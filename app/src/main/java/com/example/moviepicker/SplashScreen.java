@@ -16,21 +16,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {
-    VideoView videoView;
-    MediaPlayer mediaPlayer;
+
+    ImageView gif;
     Intent intent;
-    int currentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        setupVideo();
+        gif = findViewById(R.id.video);
+
+        Glide.with(this).load(R.raw.clapboard).into(gif);
 
         //todo - action animation (anddddd action)
         new Handler().postDelayed(new Runnable() {
@@ -45,51 +47,10 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(intent);
 
             }
-        }, 3000);
+        }, 2222);
 
     }
 
-    void setupVideo(){
-        videoView = findViewById(R.id.video );
 
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.untitled);
-        videoView.setAudioFocusRequest(AudioManager.AUDIOFOCUS_NONE);
-        videoView.setVideoURI(uri);
-        videoView.start();
-
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mediaPlayer = mp;
-
-                mediaPlayer.setLooping(true);
-                if(currentPosition != 0){
-                    mediaPlayer.seekTo(currentPosition);
-                    mediaPlayer.start();
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(mediaPlayer != null)
-            currentPosition = mediaPlayer.getCurrentPosition();
-        videoView.pause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        videoView.start();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mediaPlayer.release();
-        mediaPlayer = null;
-    }
 
 }
