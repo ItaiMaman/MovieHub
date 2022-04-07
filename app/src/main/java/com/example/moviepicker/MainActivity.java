@@ -8,6 +8,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -45,10 +47,14 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
 
+        String[] title = {"Popular", "Top Rated"};
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                tab.setText(title[tab.getPosition()]);
+                tab.setContentDescription(title[tab.getPosition()]);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> tab.setText(null), 1000);
             }
 
             @Override

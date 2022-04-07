@@ -34,6 +34,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/tab_background"
+                app:tabInlineLabel="true"
                 app:tabGravity="center"
                 app:tabIconTint="@color/tab_icon_color"
                 app:tabIndicator="@drawable/tab_indicator"

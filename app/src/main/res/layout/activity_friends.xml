@@ -6,28 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".FriendsActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:title="Friends"
-            app:layout_scrollFlags="scroll|enterAlways"/>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <RelativeLayout
+        android:id="@+id/friends_relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        android:layout_height="fill_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:title="Friends" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="30dp"
+            android:layout_above="@id/title"
+            android:layout_below="@id/app_bar_layout"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="30dp"
             android:scaleType="centerCrop"
@@ -37,8 +40,9 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@id/description"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="400dp"
+            android:layout_marginTop="50dp"
             android:text="Swipe together"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -47,7 +51,7 @@
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title"
+            android:layout_above="@id/generate"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:text="Generate a room or join an existing one to swipe together with friends and find a group match!" />
@@ -57,7 +61,7 @@
             android:id="@+id/generate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/description"
+            android:layout_above="@id/join"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="30dp"
@@ -69,18 +73,19 @@
             android:id="@+id/join"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/generate"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginVertical="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
             android:paddingVertical="12dp"
             android:text="Join with a code"
             app:backgroundTint="@color/purple"
             app:cornerRadius="10dp" />
 
     </RelativeLayout>
-
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

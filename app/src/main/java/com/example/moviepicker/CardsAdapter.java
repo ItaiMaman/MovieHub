@@ -90,6 +90,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
         notifyItemRangeInserted(size, getItemCount()-1);
     }
 
+    public List<Movies.Movie> getMovies() {
+        return movies;
+    }
+
     public Movies.Movie getMovie(int position){
         return movies.get(position);
     }
