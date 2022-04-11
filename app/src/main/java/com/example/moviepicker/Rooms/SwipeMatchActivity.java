@@ -1,18 +1,29 @@
 package com.example.moviepicker.Rooms;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.moviepicker.CardsAdapter;
 import com.example.moviepicker.Movies;
+import com.example.moviepicker.MyViewModelFactory;
 import com.example.moviepicker.R;
+import com.example.moviepicker.Room;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.Direction;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class SwipeMatchActivity extends AppCompatActivity implements CardStackListener {
 
@@ -20,20 +31,39 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
     CardStackLayoutManager layoutManager;
     SwipeMatchViewModel viewModel;
     CardsAdapter adapter;
+    Toolbar toolbar;
+    String id;
+    boolean host;
+    MaterialAlertDialogBuilder leaveDialog;
+    List<Integer> right, left;
+    HashMap<String, Integer> swiped;
+    int users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_match);
 
-        String id = getIntent().getStringExtra("id");
-        viewModel = new SwipeMatchViewModel(getApplication(), id);
+        id = getIntent().getStringExtra("id");
+        host = getIntent().getBooleanExtra("host", false);
+        viewModel = ViewModelProviders.of(this, new MyViewModelFactory(getApplication(), id, 0)).get(SwipeMatchViewModel.class);
         adapter = new CardsAdapter(this);
         cardStackView = findViewById(R.id.csv);
+        toolbar = findViewById(R.id.toolbar);
         layoutManager = new CardStackLayoutManager(this, this);
+        right = new ArrayList<>();
+        left = new ArrayList<>();
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(v -> this.onBackPressed());
 
         cardStackView.setLayoutManager(layoutManager);
         cardStackView.setAdapter(adapter);
+
+        leaveDialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Are you sure you want to leave the room?")
+                .setPositiveButton("Leave", (dialog, which) -> finish())
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).setCancelable(true);
 
         viewModel.getMovies().observe(this, new Observer<Movies>() {
             @Override
@@ -42,6 +72,23 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
             }
         });
 
+        viewModel.getUsers().observe(this, i -> users = i);
+
+        viewModel.getSwiped().observe(this, new Observer<HashMap<String, Integer>>() {
+            @Override
+            public void onChanged(HashMap<String, Integer> map) {
+                if (map != null) {
+                    swiped = map;
+                    if (host) {
+                        for (String key : map.keySet()) {
+                            if(map.get(key) == users)
+                                Log.d("tag", "maaaaaaaaaaaaaaaaatch");
+                        }
+                    }
+
+                }
+            }
+        });
 
 
         //todo - observe room state
@@ -59,9 +106,19 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
 
     @Override
     public void onCardSwiped(Direction direction) {
-        if(layoutManager.getTopPosition() == adapter.getMovies().size() -3 ){
+        if (layoutManager.getTopPosition() == adapter.getMovies().size() - 3) {
             viewModel.newRequest();
         }
+        int id = adapter.getMovie(layoutManager.getTopPosition() - 1).getId();
+
+        if (direction == Direction.Right) {
+
+            if (!right.contains(id)) {
+                viewModel.swipeRight(id);
+            }
+        }
+        else if (direction == Direction.Left)
+            left.add(id);
     }
 
     @Override
@@ -82,5 +139,11 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
     @Override
     public void onCardDisappeared(View view, int position) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        leaveDialog.setMessage(host ? "All participants will be kicked from the session" : null);
+        leaveDialog.show();
     }
 }

@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.DataTruncation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class FirebaseSource {
         return roomRef.getKey();
     }
 
-    public Query getRoom(String id) {
+    public DatabaseReference getRoom(String id) {
         return rooms.child(id);
     }
 
@@ -149,12 +150,25 @@ public class FirebaseSource {
     }
 
     public DatabaseReference getRoomState(String roomId){
-        return rooms.child("running");
+        return rooms.child(roomId).child("running");
+    }
+
+    public DatabaseReference getMatchState(String roomId){
+        return rooms.child(roomId).child("match");
+    }
+
+    public DatabaseReference getRoomUsers(String roomId){
+        return rooms.child(roomId).child("users");
+    }
+
+    public DatabaseReference getRoomMovies(String roomId){
+        return rooms.child(roomId).child("swiped");
     }
 
     public void swipeRightMatch(String roomId, int id, int value){
         rooms.child(roomId).child("swiped").child(String.valueOf(id)).setValue(value);
     }
+
 }
 
 

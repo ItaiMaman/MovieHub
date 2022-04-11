@@ -12,7 +12,7 @@ public class Room {
     private String ownerId;
     private String roomId;
     private HashMap<String, String> users;
-    private HashMap<Integer, Integer> swiped;
+    private HashMap<String, Integer> swiped;
     private Boolean running, match;
 
     public Room(String push, String ownerId) {
@@ -52,11 +52,11 @@ public class Room {
         this.users = users;
     }
 
-    public HashMap<Integer, Integer> getSwiped() {
+    public HashMap<String, Integer> getSwiped() {
         return swiped;
     }
 
-    public void setSwiped(HashMap<Integer, Integer> swiped) {
+    public void setSwiped(HashMap<String, Integer> swiped) {
         this.swiped = swiped;
     }
 

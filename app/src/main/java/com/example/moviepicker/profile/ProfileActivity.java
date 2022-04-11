@@ -1,4 +1,4 @@
-package com.example.moviepicker;
+package com.example.moviepicker.profile;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toolbar;
+
+import com.example.moviepicker.Movies;
+import com.example.moviepicker.R;
 
 import java.util.List;
 

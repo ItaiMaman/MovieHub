@@ -1,4 +1,4 @@
-package com.example.moviepicker;
+package com.example.moviepicker.profile;
 
 import android.app.Application;
 import android.util.Log;
@@ -6,6 +6,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.moviepicker.FirebaseSource;
+import com.example.moviepicker.Movies;
 
 import java.util.List;
 

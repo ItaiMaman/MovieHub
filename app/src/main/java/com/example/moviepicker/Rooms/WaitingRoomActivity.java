@@ -3,11 +3,16 @@ package com.example.moviepicker.Rooms;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.moviepicker.MainActivity;
+import com.example.moviepicker.MyViewModelFactory;
 import com.example.moviepicker.R;
 import com.example.moviepicker.Room;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -28,9 +33,7 @@ public class WaitingRoomActivity extends RoomInterface{
         String id = getIntent().getStringExtra("id");
         toolbar = findViewById(R.id.toolbar);
         users = findViewById(R.id.users);
-        viewModel = new RoomViewModel(getApplication(), id);
-
-
+        viewModel = ViewModelProviders.of(this, new MyViewModelFactory(getApplication(), id, 1)).get(RoomViewModel.class);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         adapter = new RoomParticipantsAdapter(this);
@@ -52,10 +55,15 @@ public class WaitingRoomActivity extends RoomInterface{
                 if(room == null){
                     roomDeletedDialog.show();
                 }
-                else
+                else{
+                    Log.d("tag", "" + room.getRunning());
+                    if(room.getRunning())
+                        startActivity(new Intent(WaitingRoomActivity.this, SwipeMatchActivity.class).putExtra("id", room.getRoomId()).putExtra("host", false));
                     adapter.setRoom(room);
+                }
             }
         });
+
     }
 
 

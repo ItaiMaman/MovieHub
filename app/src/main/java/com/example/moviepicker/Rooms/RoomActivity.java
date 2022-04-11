@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.example.moviepicker.MainActivity;
 import com.example.moviepicker.R;
 import com.example.moviepicker.Room;
 import com.google.android.material.button.MaterialButton;
@@ -73,12 +76,13 @@ public class RoomActivity extends RoomInterface {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(room != null && room.getUsers().size() > 0){
-                    startActivity(new Intent(RoomActivity.this, SwipeMatchActivity.class).putExtra("id", room.getRoomId()));
+                if(room != null && room.getUsers() != null &&  room.getUsers().size()> 0){
+                    viewModel.startRoom();
+                    startActivity(new Intent(RoomActivity.this, SwipeMatchActivity.class).putExtra("id", room.getRoomId()).putExtra("host", true));
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> finish(), 700);
                 }
                 else{
                     startDialog.show();
-                    viewModel.startRoom();
                 }
             }
         });
@@ -113,12 +117,6 @@ public class RoomActivity extends RoomInterface {
             viewModel.deleteRoom();
             super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        viewModel.deleteRoom();
     }
 
 

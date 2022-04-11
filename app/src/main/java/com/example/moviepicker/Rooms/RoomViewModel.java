@@ -49,6 +49,22 @@ public class RoomViewModel extends AndroidViewModel {
         return firebaseSource.getUsername(uid);
     }
 
+    public LiveData<Boolean> getRoomState() {
+        MutableLiveData<Boolean> run = new MutableLiveData<>();
+        firebaseSource.getRoomState(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                run.setValue(snapshot.getValue(Boolean.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return run;
+    }
+
     public void deleteRoom(){
         firebaseSource.deleteRoom(id);
     }

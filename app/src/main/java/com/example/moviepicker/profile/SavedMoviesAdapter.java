@@ -1,7 +1,6 @@
-package com.example.moviepicker;
+package com.example.moviepicker.profile;
 
 import android.content.Context;
-import android.provider.SyncStateContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.example.moviepicker.Movies;
+import com.example.moviepicker.R;
+import com.example.moviepicker.Utils;
 
 import java.util.List;
 
