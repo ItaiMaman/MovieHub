@@ -13,7 +13,7 @@
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="245dp"
-        app:srcCompat="@drawable/splash_screen_shape" />
+        app:srcCompat="@drawable/gradient" />
 
     <TextView
         android:id="@+id/tv_login"

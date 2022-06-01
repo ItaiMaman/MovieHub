@@ -22,7 +22,7 @@ import java.util.Locale;
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder > {
 
     private List<Movies.Movie> movies;
-    private Context context;
+    private final Context context;
 
     public CardsAdapter(Context context) {
         this.context = context;
@@ -78,7 +78,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder >
             title = itemView.findViewById(R.id.title);
             genre = itemView.findViewById(R.id.genre);
             releaseDate = itemView.findViewById(R.id.release_date);
-            img = itemView.findViewById(R.id.image);
+            img = itemView.findViewById(R.id.profile_picture);
             review = itemView.findViewById(R.id.review);
         }
     }

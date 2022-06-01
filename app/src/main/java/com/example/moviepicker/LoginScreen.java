@@ -1,25 +1,22 @@
 package com.example.moviepicker;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginScreen extends AppCompatActivity {
     EditText et_email, et_password;
@@ -82,20 +79,9 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
-        tv_donthaveaccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SignUpScreen.class);
-                startActivity(intent);
-            }
-        });
+        tv_donthaveaccount.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), SignUpScreen.class)));
 
-        tv_forgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createForgotDialog();
-            }
-        });
+        tv_forgot.setOnClickListener(view -> createForgotDialog());
 
     }
 
@@ -143,10 +129,8 @@ public class LoginScreen extends AppCompatActivity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private boolean validPassword(String password){
-        boolean valid = true;
-        if(password.isEmpty() || password.length()<8) valid = false;
-        return valid;
+    private boolean validPassword(@NonNull String password){
+        return !password.isEmpty() && password.length() >= 8;
     }
 
     public void mySnackbar(String message){

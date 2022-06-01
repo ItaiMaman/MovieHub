@@ -16,18 +16,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieService {
 
-    private static String BASE_URL = "https://api.themoviedb.org/3/";
-    private static String API_KEY = "111ff409a22791e3d0ac3616a1c091da";
+    private static final String BASE_URL = "https://api.themoviedb.org/3/";
+    private static final String API_KEY = "111ff409a22791e3d0ac3616a1c091da";
 
-    private static Retrofit.Builder retrofitBuilder =
+    private static final Retrofit.Builder retrofitBuilder =
             new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(provideOkHttp());
 
-    private static Retrofit retrofit = retrofitBuilder.build();
+    private static final Retrofit retrofit = retrofitBuilder.build();
 
-    private static MovieApi movieApi = retrofit.create(MovieApi.class);
+    private static final MovieApi movieApi = retrofit.create(MovieApi.class);
 
     public static MovieApi getMovieApi() {
         return movieApi;
@@ -38,7 +38,7 @@ public class MovieService {
                 .addInterceptor(new Interceptor() {
                     @NonNull
                     @Override
-                    public Response intercept(Chain chain) throws IOException {
+                    public Response intercept(@NonNull Chain chain) throws IOException {
                         Request request = chain.request();
                         HttpUrl url = request.url().newBuilder().addQueryParameter("api_key", API_KEY).build();
                         request = request.newBuilder().url(url).build();

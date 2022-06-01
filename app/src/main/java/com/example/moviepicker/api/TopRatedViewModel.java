@@ -34,9 +34,7 @@ public class TopRatedViewModel extends AndroidViewModel {
     }
 
     public void addToMovies(Movies data){
-        Log.d("tag", "add");
         if(data != null){
-            Log.d("tag", "not null");
             page++;
             if(movies.getValue() != null){
                 List<Movies.Movie> list = movies.getValue().getMovies();
@@ -50,7 +48,6 @@ public class TopRatedViewModel extends AndroidViewModel {
     }
 
     public void newRequest(){
-        Log.d("tag", "request");
         movieApi.getTopRatedMovies(page).enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {

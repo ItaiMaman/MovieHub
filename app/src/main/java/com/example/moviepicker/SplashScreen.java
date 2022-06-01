@@ -34,7 +34,6 @@ public class SplashScreen extends AppCompatActivity {
 
         Glide.with(this).load(R.raw.clapboard).into(gif);
 
-        //todo - action animation (anddddd action)
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -1,8 +1,5 @@
 package com.example.moviepicker;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpScreen extends AppCompatActivity {
     EditText et_username, et_email, et_password, et_confirm;
@@ -98,16 +97,12 @@ public class SignUpScreen extends AppCompatActivity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private boolean validPassword(String password) {
-        boolean valid = true;
-        if (password.isEmpty() || password.length() < 8) valid = false;
-        return valid;
+    private boolean validPassword(@NonNull String password) {
+        return !password.isEmpty() && password.length() >= 8;
     }
 
-    private boolean passwordsMatch(String password, String confirm) {
-        boolean match = false;
-        if (confirm.equals(password)) match = true;
-        return match;
+    private boolean passwordsMatch(String password, @NonNull String confirm) {
+        return confirm.equals(password);
     }
 
     public void mySnackBar(String message) {

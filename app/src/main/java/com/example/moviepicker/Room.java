@@ -1,32 +1,41 @@
 package com.example.moviepicker;
 
-import android.util.Log;
+import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 
 public class Room {
 
     private String code;
     private String ownerId;
     private String roomId;
+    private int match;
     private HashMap<String, String> users;
-    private HashMap<String, Integer> swiped;
-    private Boolean running, match;
+    private HashMap<String, HashMap<String, Long>> swiped;
+    private Boolean running;
 
-    public Room(String push, String ownerId) {
+    public Room(@NonNull String push, String ownerId) {
         this.roomId = push;
-        this.code = push.substring(push.length() - 4).toUpperCase();
+        this.code = "";
+        for(int i = 0; i < push.length()-4; i++){
+            char c = push.charAt(i+4);
+            if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+                code += c;
+            if(code.length() == 4){
+                code = code.toUpperCase(Locale.ROOT);
+                break;
+            }
+
+        }
         this.ownerId = ownerId;
         this.users = new HashMap<>();
         this.swiped = new HashMap<>();
         this.running = false;
-        this.match = false;
+        this.match = 0;
     }
 
-    public Room() {
-    }
+    public Room() {}
 
     public String getCode() {
         return code;
@@ -52,19 +61,20 @@ public class Room {
         this.users = users;
     }
 
-    public HashMap<String, Integer> getSwiped() {
+
+    public HashMap<String, HashMap<String, Long>> getSwiped() {
         return swiped;
     }
 
-    public void setSwiped(HashMap<String, Integer> swiped) {
+    public void setSwiped(HashMap<String, HashMap<String, Long>> swiped) {
         this.swiped = swiped;
     }
 
-    public Boolean getMatch() {
+    public int getMatch() {
         return match;
     }
 
-    public void setMatch(Boolean match) {
+    public void setMatch(int match) {
         this.match = match;
     }
 

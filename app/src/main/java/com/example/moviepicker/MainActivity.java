@@ -1,6 +1,7 @@
 package com.example.moviepicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -14,6 +15,9 @@ import com.example.moviepicker.profile.ProfileActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_fire);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_top_rated);
         fab = findViewById(R.id.fab);
-        adapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new PopularFragment());
+        fragments.add(new TopRatedFragment());
+        adapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
 
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
@@ -78,25 +85,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //todo - store in realtime database
-        //todo - connect with other user
         //todo - match (calender service)
         //todo - extra details onclick of card
         //todo - matched movie with menu (fab) (cancel, message, set event)
 
-        friends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, FriendsActivity.class));
-            }
-        });
+        friends.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, FriendsActivity.class)));
 
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-            }
-        });
+        profile.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ProfileActivity.class)));
 
     }
 

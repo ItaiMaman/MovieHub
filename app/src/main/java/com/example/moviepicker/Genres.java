@@ -17,7 +17,7 @@ public enum Genres {
     History(36),
     Horror(27),
     Music(10402),
-    Mistery(9648),
+    Mystery(9648),
     Romance(10749),
     ScienceFiction(878),
     TVMovie(10770),
@@ -25,7 +25,7 @@ public enum Genres {
     War(10752),
     Western(37);
 
-    private int id;
+    private final int id;
     
     Genres(int id) {
         this.id = id;
@@ -38,9 +38,9 @@ public enum Genres {
     private static final Map<Integer,String> map;
 
     static {
-        map = new HashMap<Integer,String>();
+        map = new HashMap<>();
         for (Genres v : Genres.values()) {
-            map.put(v.id, v.name().toString());
+            map.put(v.id, v.name());
         }
     }
 }

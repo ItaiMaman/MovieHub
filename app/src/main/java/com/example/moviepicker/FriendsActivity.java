@@ -1,15 +1,16 @@
 package com.example.moviepicker;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import com.example.moviepicker.Rooms.RoomActivity;
 import com.example.moviepicker.Rooms.WaitingRoomActivity;
@@ -70,11 +71,14 @@ public class FriendsActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        joinRoom.setOnClickListener(v -> dialog.show());
+        joinRoom.setOnClickListener(v -> {
+            dialog.show();
+            code.setText(null);
+        });
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }

@@ -12,11 +12,9 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
     ArrayList<Fragment> fragments;
 
-    public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,ArrayList<Fragment> fragments ) {
         super(fragmentManager, lifecycle);
-        this.fragments = new ArrayList<>();
-        fragments.add(new PopularFragment());
-        fragments.add(new TopRatedFragment());
+        this.fragments = fragments;
     }
 
     @NonNull

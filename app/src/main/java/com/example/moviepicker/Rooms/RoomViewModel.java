@@ -37,7 +37,7 @@ public class RoomViewModel extends AndroidViewModel {
         });
     }
 
-    public void startRoom(){
+    public void startRoom() {
         firebaseSource.startRoom(id);
     }
 

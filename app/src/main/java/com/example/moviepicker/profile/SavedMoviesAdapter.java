@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.moviepicker.Genres;
 import com.example.moviepicker.Movies;
 import com.example.moviepicker.R;
 import com.example.moviepicker.Utils;
@@ -20,7 +21,7 @@ import java.util.List;
 public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.ViewHolder> {
 
     private List<Movies.Movie> movies;
-    private Context context;
+    private final Context context;
 
     public SavedMoviesAdapter(Context context) {
         this.context = context;
@@ -29,14 +30,16 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return  new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_saved_movie, parent, false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_saved_movie, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Movies.Movie movie = movies.get(position);
-            Utils.loadImage(context, Utils.IMAGE_URL + movie.getBackdropPath(), holder.img);
-            holder.txt.setText(movie.getTitle());
+            Utils.loadImage(context, Utils.IMAGE_URL + movie.getPosterPath(), holder.image);
+            holder.title.setText(movie.getTitle());
+            holder.review.setText(String.valueOf(movie.getVoteAverage()));
+            holder.genre.setText(Genres.findByKey(movie.getGenreIds().get(0)));
     }
 
     @Override
@@ -46,14 +49,18 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         else return movies.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img;
-        TextView txt;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView image;
+        TextView title, genre, review;
+
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.img);
-            txt = itemView.findViewById(R.id.txt);
+            image = itemView.findViewById(R.id.img);
+            title = itemView.findViewById(R.id.txt);
+            genre = itemView.findViewById(R.id.genre);
+            review = itemView.findViewById(R.id.review);
         }
     }
 

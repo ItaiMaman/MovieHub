@@ -21,6 +21,9 @@
             android:name=".Rooms.RoomActivity"
             android:exported="false" />
         <activity
+            android:name=".AddEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".profile.ProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

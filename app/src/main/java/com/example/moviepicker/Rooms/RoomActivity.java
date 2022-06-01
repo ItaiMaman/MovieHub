@@ -32,13 +32,14 @@ public class RoomActivity extends RoomInterface {
     RoomParticipantsAdapter adapter;
     MaterialAlertDialogBuilder dialog, startDialog;
     Room room;
+    boolean closeRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
-
+        closeRoom = true;
         String id = getIntent().getStringExtra("id");
         viewModel = new RoomViewModel(getApplication(), id);
         code = findViewById(R.id.code);
@@ -48,7 +49,7 @@ public class RoomActivity extends RoomInterface {
         adapter = new RoomParticipantsAdapter(this);
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setNavigationOnClickListener(v -> this.onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -78,6 +79,7 @@ public class RoomActivity extends RoomInterface {
             public void onClick(View v) {
                 if(room != null && room.getUsers() != null &&  room.getUsers().size()> 0){
                     viewModel.startRoom();
+                    closeRoom = false;
                     startActivity(new Intent(RoomActivity.this, SwipeMatchActivity.class).putExtra("id", room.getRoomId()).putExtra("host", true));
                     new Handler(Looper.getMainLooper()).postDelayed(() -> finish(), 700);
                 }
@@ -119,5 +121,10 @@ public class RoomActivity extends RoomInterface {
         }
     }
 
-
+    @Override
+    protected void onStop() {
+        if(closeRoom)
+            viewModel.deleteRoom();
+        super.onStop();
+    }
 }

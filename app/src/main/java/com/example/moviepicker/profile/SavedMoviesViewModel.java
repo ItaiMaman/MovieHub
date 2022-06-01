@@ -15,7 +15,7 @@ import java.util.List;
 public class SavedMoviesViewModel extends AndroidViewModel {
 
     private FirebaseSource firebaseSource;
-    private LiveData<List<Movies.Movie>> movies;
+    private final LiveData<List<Movies.Movie>> movies;
 
     public SavedMoviesViewModel(@NonNull Application application) {
         super(application);

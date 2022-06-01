@@ -21,7 +21,7 @@ public class PopularViewModel extends AndroidViewModel {
 
     MovieApi movieApi;
     FirebaseSource firebaseSource;
-    private MutableLiveData<Movies> movies;
+    private final MutableLiveData<Movies> movies;
     int page = 1;
 
     public PopularViewModel(@NonNull Application application) {

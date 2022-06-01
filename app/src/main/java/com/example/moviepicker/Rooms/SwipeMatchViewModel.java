@@ -1,27 +1,21 @@
 package com.example.moviepicker.Rooms;
 
 import android.app.Application;
-import android.widget.MultiAutoCompleteTextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.moviepicker.FirebaseSource;
 import com.example.moviepicker.Movies;
-import com.example.moviepicker.Room;
 import com.example.moviepicker.api.MovieApi;
 import com.example.moviepicker.api.MovieService;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,16 +25,15 @@ import retrofit2.Response;
 
 public class SwipeMatchViewModel extends AndroidViewModel {
 
-    MutableLiveData<Room> room;
-    MovieApi movieApi;
-    FirebaseSource firebaseSource;
-    private MutableLiveData<Movies> movies;
-    int page = 1;
-    String roomId;
-    MutableLiveData<Integer> users;
-    MutableLiveData<Boolean> active, match;
-    MutableLiveData<HashMap<String, Integer>> swiped;
-
+    private final MovieApi movieApi;
+    private final FirebaseSource firebaseSource;
+    private final MutableLiveData<Movies> movies;
+    private int page = 1;
+    private final String roomId;
+    private final MutableLiveData<Integer> users;
+    private final MutableLiveData<Integer> match;
+    private final MutableLiveData<Boolean> active;
+    private final MutableLiveData<HashMap<String, HashMap<String, Long>>> swiped;
 
     public SwipeMatchViewModel(@NonNull Application application, String roomId) {
         super(application);
@@ -49,7 +42,6 @@ public class SwipeMatchViewModel extends AndroidViewModel {
         firebaseSource = new FirebaseSource();
         movieApi = MovieService.getMovieApi();
         movies = new MutableLiveData<>();
-        room = new MutableLiveData<>();
         users = new MutableLiveData<>();
         active = new MutableLiveData<>();
         match = new MutableLiveData<>();
@@ -75,12 +67,12 @@ public class SwipeMatchViewModel extends AndroidViewModel {
     public void newRequest() {
         movieApi.getPopularMovies(page).enqueue(new Callback<Movies>() {
             @Override
-            public void onResponse(Call<Movies> call, Response<Movies> response) {
+            public void onResponse(@NonNull Call<Movies> call, @NonNull Response<Movies> response) {
                 addToMovies(response.body());
             }
 
             @Override
-            public void onFailure(Call<Movies> call, Throwable t) {
+            public void onFailure(@NonNull Call<Movies> call, @NonNull Throwable t) {
 
             }
         });
@@ -98,26 +90,16 @@ public class SwipeMatchViewModel extends AndroidViewModel {
         return active;
     }
 
-    public LiveData<Boolean> getMatch() {
+    public LiveData<Integer> getMatch() {
         return match;
     }
 
-    public LiveData<HashMap<String, Integer>> getSwiped() {
+    public MutableLiveData<HashMap<String, HashMap<String, Long>>> getSwiped() {
         return swiped;
     }
 
+
     public void fetchStuff() {
-        firebaseSource.getRoom(roomId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                room.setValue(snapshot.getValue(Room.class));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         firebaseSource.getRoomUsers(roomId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -133,7 +115,10 @@ public class SwipeMatchViewModel extends AndroidViewModel {
         firebaseSource.getRoomState(roomId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                active.setValue(snapshot.getValue(Boolean.class));
+                if (snapshot.exists())
+                    active.setValue(snapshot.getValue(Boolean.class));
+                else
+                    active.setValue(null);
             }
 
             @Override
@@ -144,7 +129,10 @@ public class SwipeMatchViewModel extends AndroidViewModel {
         firebaseSource.getMatchState(roomId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                match.setValue(snapshot.getValue(Boolean.class));
+                if(snapshot.exists())
+                    match.setValue(snapshot.getValue(Integer.class));
+                else
+                    match.setValue(null);
             }
 
             @Override
@@ -152,8 +140,9 @@ public class SwipeMatchViewModel extends AndroidViewModel {
 
             }
         });
-        GenericTypeIndicator<HashMap<String, Integer>> indicator = new GenericTypeIndicator<HashMap<String, Integer>>() {
+        GenericTypeIndicator<HashMap<String, HashMap<String, Long>>> indicator = new GenericTypeIndicator<HashMap<String, HashMap<String, Long>>>() {
         };
+
         firebaseSource.getRoomMovies(roomId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -169,17 +158,35 @@ public class SwipeMatchViewModel extends AndroidViewModel {
 
 
     public void swipeRight(int id) {
-        firebaseSource.getRoom(roomId).child("swiped").child(String.valueOf(id)).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot i) {
-                int value = 1;
-                if (i.exists())
-                    value += i.getValue(Integer.class);
-                firebaseSource.swipeRightMatch(roomId, id, value );
-            }
-        });
-
+        firebaseSource.swipeRightMatch(roomId, id);
     }
 
+    public void swipeLeft(int id) {
+        firebaseSource.swipeLeftMatch(roomId, id);
+    }
 
+    public void match(int id) {
+        firebaseSource.match(roomId, id);
+    }
+
+    public void clearMatch(){
+        firebaseSource.clearMovieSwipes(roomId, match.getValue());
+        firebaseSource.match(roomId, 0);
+    }
+
+    public void closeRoom(){
+        firebaseSource.deleteRoom(roomId);
+    }
+
+    public void leaveRoom(){
+        firebaseSource.leaveRoom(roomId);
+    }
+
+    public void setActive(Boolean bool){
+        firebaseSource.setActive(roomId, bool);
+    }
+
+    public void deleteRoom(){
+        firebaseSource.deleteRoom(roomId);
+    }
 }

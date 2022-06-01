@@ -2,6 +2,7 @@ package com.example.moviepicker;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -9,9 +10,9 @@ import com.example.moviepicker.Rooms.RoomViewModel;
 import com.example.moviepicker.Rooms.SwipeMatchViewModel;
 
 public class MyViewModelFactory implements ViewModelProvider.Factory {
-    private Application mApplication;
-    private String mParam;
-    private int type;
+    private final Application mApplication;
+    private final String mParam;
+    private final int type;
 
 
     public MyViewModelFactory(Application application, String param, int type) {
@@ -21,8 +22,9 @@ public class MyViewModelFactory implements ViewModelProvider.Factory {
     }
 
 
+    @NonNull
     @Override
-    public <T extends ViewModel> T create(Class<T> modelClass) {
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
 
         if(type == 0)
         return (T) new SwipeMatchViewModel(mApplication, mParam);

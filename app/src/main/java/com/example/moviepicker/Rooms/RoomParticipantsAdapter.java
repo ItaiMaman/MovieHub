@@ -64,14 +64,13 @@ public class RoomParticipantsAdapter extends RecyclerView.Adapter<RoomParticipan
         }
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(@NonNull Room room) {
         this.room = room;
         if(room.getUsers() != null)
             this.users = new ArrayList<>(room.getUsers().keySet());
         else
             this.users = new ArrayList<>();
         this.users.add(0, room.getOwnerId());
-        Log.d("tag", "users " + users.size());
 
         notifyDataSetChanged();
     }

@@ -1,5 +1,8 @@
 package com.example.moviepicker.Rooms;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -7,11 +10,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
-import com.example.moviepicker.MainActivity;
 import com.example.moviepicker.MyViewModelFactory;
 import com.example.moviepicker.R;
 import com.example.moviepicker.Room;
@@ -56,9 +54,10 @@ public class WaitingRoomActivity extends RoomInterface{
                     roomDeletedDialog.show();
                 }
                 else{
-                    Log.d("tag", "" + room.getRunning());
-                    if(room.getRunning())
+                    if(room.getRunning()){
                         startActivity(new Intent(WaitingRoomActivity.this, SwipeMatchActivity.class).putExtra("id", room.getRoomId()).putExtra("host", false));
+                        finish();
+                    }
                     adapter.setRoom(room);
                 }
             }

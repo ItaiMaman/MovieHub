@@ -1,7 +1,5 @@
 package com.example.moviepicker;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -15,18 +13,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.DataTruncation;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseSource {
 
-    private static DatabaseReference rooms = FirebaseDatabase.getInstance().getReference("rooms");
-    private DatabaseReference userdata;
-    private FirebaseAuth auth;
+    private static final DatabaseReference rooms = FirebaseDatabase.getInstance().getReference("rooms");
+    private final DatabaseReference userdata;
+    private final FirebaseAuth auth;
+    private int id;
 
     public FirebaseSource() {
         auth = FirebaseAuth.getInstance();
@@ -37,7 +34,7 @@ public class FirebaseSource {
         return userdata.child("username").setValue(username);
     }
 
-    public void saveMovie(Movies.Movie movie) {
+    public void saveMovie(@NonNull Movies.Movie movie) {
         String push = userdata.push().getKey();
         movie.setPush(push);
         userdata.child("watchlist").child(String.valueOf(movie.getId())).setValue(movie);
@@ -65,7 +62,7 @@ public class FirebaseSource {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 for (Movies.Movie i : list) {
-                    if (i.getId() == snapshot.getValue(Movies.Movie.class).getId()) {
+                    if (i.getId().equals(snapshot.getValue(Movies.Movie.class).getId())) {
                         list.remove(i);
                         break;
                     }
@@ -103,21 +100,19 @@ public class FirebaseSource {
 
     public LiveData<String> joinRoom(String code) {
         MutableLiveData<String> roomId = new MutableLiveData<>();
-        //todo fetch change and update\
-        Log.d("tag", code);
+
         rooms.orderByChild("code").equalTo(code).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful() && task.getResult().exists()){
+                if (task.isSuccessful() && task.getResult().exists()) {
                     DataSnapshot snapshot = task.getResult();
-                    for(DataSnapshot ds : snapshot.getChildren()){
+                    for (DataSnapshot ds : snapshot.getChildren()) {
                         Room room = ds.getValue(Room.class);
                         room.addUser(auth.getUid(), rooms.push().getKey());
                         rooms.child(room.getRoomId()).setValue(room);
                         roomId.setValue(room.getRoomId());
                     }
-                }
-                else{
+                } else {
                     roomId.setValue(null);
                 }
             }
@@ -125,7 +120,7 @@ public class FirebaseSource {
         return roomId;
     }
 
-    public MutableLiveData<String> getUsername(String uid) {
+    public LiveData<String> getUsername(String uid) {
         MutableLiveData<String> username = new MutableLiveData<>();
         FirebaseDatabase.getInstance().getReference("UserData").child(uid).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -141,34 +136,67 @@ public class FirebaseSource {
         return username;
     }
 
-    public void startRoom(String roomId){
+    public void startRoom(String roomId) {
         rooms.child(roomId).child("running").setValue(true);
     }
 
     public void leaveRoom(String roomId) {
-        rooms.child(roomId).child("users").child(auth.getUid()).removeValue();
+
+        rooms.child(roomId).child("swiped").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot ds : snapshot.getChildren()){
+                        rooms.child(roomId).child("swiped").child(ds.getKey()).child(auth.getUid()).removeValue();
+                    }
+                }
+                rooms.child(roomId).child("users").child(auth.getUid()).removeValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
-    public DatabaseReference getRoomState(String roomId){
+    public DatabaseReference getRoomState(String roomId) {
         return rooms.child(roomId).child("running");
     }
 
-    public DatabaseReference getMatchState(String roomId){
+    public DatabaseReference getMatchState(String roomId) {
         return rooms.child(roomId).child("match");
     }
 
-    public DatabaseReference getRoomUsers(String roomId){
+    public DatabaseReference getRoomUsers(String roomId) {
         return rooms.child(roomId).child("users");
     }
 
-    public DatabaseReference getRoomMovies(String roomId){
+    public DatabaseReference getRoomMovies(String roomId) {
         return rooms.child(roomId).child("swiped");
     }
 
-    public void swipeRightMatch(String roomId, int id, int value){
-        rooms.child(roomId).child("swiped").child(String.valueOf(id)).setValue(value);
+    public void swipeRightMatch(String roomId, int id) {
+        rooms.child(roomId).child("swiped").child(String.valueOf(id)).child(auth.getUid()).setValue(id);
     }
 
+    public void swipeLeftMatch(String roomId, int id) {
+        rooms.child(roomId).child("swiped").child(String.valueOf(id)).child(auth.getUid()).removeValue();
+    }
+
+    public void match(String roomId, int id) {
+        rooms.child(roomId).child("match").setValue(id);
+    }
+
+    public void clearMovieSwipes(String roomId, int id) {
+        rooms.child(roomId).child("swiped").child(String.valueOf(id)).removeValue();
+    }
+
+    public void setActive(String roomId, Boolean bool) {
+        rooms.child(roomId).child("running").setValue(bool);
+    }
 }
 
 

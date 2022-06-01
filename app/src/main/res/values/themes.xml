@@ -26,7 +26,23 @@
         <item name="android:fontFamily">@font/quicksand_medium</item>
     </style>
 
+    <style name="PauseDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/PauseDialogAnimation</item>
+    </style>
 
+    <style name="PauseDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/move_in</item>
+    </style>
+
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/pink</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintTextColor">@color/pink</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="colorControlActivated">@color/pink</item>
+        <item name="colorControlHighlight">@color/pink</item>
+        <item name="colorControlNormal">@color/pink</item>
+    </style>
 
 
 </resources>
