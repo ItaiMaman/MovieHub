@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.startScreens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.moviehub.R;
+import com.example.moviehub.home.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {

@@ -110,6 +110,49 @@
 
 
     </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/right_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/not_so_faded_black"
+        android:background="@drawable/shape_round_square">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Like"
+
+            android:textColor="@color/green"
+            android:background="@drawable/shape_border_like"
+            android:paddingHorizontal="10dp"
+            android:backgroundTint="@color/green"
+            android:textSize="45sp"
+            app:tint="@color/white"
+            android:layout_gravity="top|left"
+            android:layout_margin="15dp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/left_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_round_square"
+        android:backgroundTint="@color/not_so_faded_black">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pass"
+            android:textColor="@color/red"
+            android:background="@drawable/shape_border_like"
+            android:paddingHorizontal="10dp"
+            android:backgroundTint="@color/red"
+            android:textSize="45sp"
+            app:tint="@color/white"
+            android:layout_gravity="top|right"
+            android:layout_margin="15dp"/>
+    </FrameLayout>
+
 
 
 

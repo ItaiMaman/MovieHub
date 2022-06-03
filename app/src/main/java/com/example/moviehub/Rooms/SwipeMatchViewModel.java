@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.moviehub.FirebaseSource;
-import com.example.moviehub.Movies;
+import com.example.moviehub.models.Movies;
 import com.example.moviehub.api.MovieApi;
 import com.example.moviehub.api.MovieService;
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,10 +32,11 @@ public class SwipeMatchViewModel extends AndroidViewModel {
     private final MutableLiveData<Movies> movies;
     private int page = 1;
     private final String roomId;
-    private final MutableLiveData<Integer> users;
+    private final MutableLiveData<List<String>> users;
     private final MutableLiveData<Integer> match;
     private final MutableLiveData<Boolean> active;
     private final MutableLiveData<HashMap<String, HashMap<String, Long>>> swiped;
+    private final MutableLiveData<Date> date;
 
     public SwipeMatchViewModel(@NonNull Application application, String roomId) {
         super(application);
@@ -46,6 +49,7 @@ public class SwipeMatchViewModel extends AndroidViewModel {
         active = new MutableLiveData<>();
         match = new MutableLiveData<>();
         swiped = new MutableLiveData<>();
+        date = new MutableLiveData<>();
 
         newRequest();
         fetchStuff();
@@ -82,7 +86,7 @@ public class SwipeMatchViewModel extends AndroidViewModel {
         return movies;
     }
 
-    public LiveData<Integer> getUsers() {
+    public LiveData<List<String>> getUsers() {
         return users;
     }
 
@@ -100,10 +104,26 @@ public class SwipeMatchViewModel extends AndroidViewModel {
 
 
     public void fetchStuff() {
+        List<String> list = new ArrayList<>();
         firebaseSource.getRoomUsers(roomId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                users.setValue((int) snapshot.getChildrenCount());
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    list.add(ds.getKey());
+                }
+                users.setValue(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        firebaseSource.getRoom(roomId).child("ownerId").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.add(snapshot.getValue(String.class));
+                users.setValue(list);
             }
 
             @Override
@@ -154,6 +174,18 @@ public class SwipeMatchViewModel extends AndroidViewModel {
 
             }
         });
+
+        firebaseSource.getRoomDate(roomId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                date.setValue(snapshot.getValue(Date.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 
@@ -184,6 +216,14 @@ public class SwipeMatchViewModel extends AndroidViewModel {
 
     public void setActive(Boolean bool){
         firebaseSource.setActive(roomId, bool);
+    }
+
+    public MutableLiveData<Date> getDate() {
+        return date;
+    }
+
+    public void addEvent(Date date, Movies.Movie movie, List<String> friends){
+        firebaseSource.addEvent(date, movie, friends );
     }
 
     public void deleteRoom(){

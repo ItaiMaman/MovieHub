@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.models;
 
 import java.util.HashMap;
 import java.util.Map;

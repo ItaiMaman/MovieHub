@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.Rooms;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
-import com.example.moviehub.Rooms.RoomActivity;
-import com.example.moviehub.Rooms.WaitingRoomActivity;
+import com.example.moviehub.FirebaseSource;
+import com.example.moviehub.R;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
@@ -73,7 +73,7 @@ public class FriendsActivity extends AppCompatActivity {
 
         joinRoom.setOnClickListener(v -> {
             dialog.show();
-            code.setText(null);
+            code.setText("");
         });
     }
 

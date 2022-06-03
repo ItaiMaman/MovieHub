@@ -1,6 +1,6 @@
 package com.example.moviehub.api;
 
-import com.example.moviehub.Movies;
+import com.example.moviehub.models.Movies;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

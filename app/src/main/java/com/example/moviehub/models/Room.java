@@ -1,7 +1,8 @@
-package com.example.moviehub;
+package com.example.moviehub.models;
 
 import androidx.annotation.NonNull;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -14,6 +15,7 @@ public class Room {
     private HashMap<String, String> users;
     private HashMap<String, HashMap<String, Long>> swiped;
     private Boolean running;
+    private Date date;
 
     public Room(@NonNull String push, String ownerId) {
         this.roomId = push;
@@ -33,6 +35,7 @@ public class Room {
         this.swiped = new HashMap<>();
         this.running = false;
         this.match = 0;
+        this.date = null;
     }
 
     public Room() {}

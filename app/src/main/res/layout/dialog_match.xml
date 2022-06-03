@@ -17,12 +17,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="There has been a match!"
-            android:textSize="40dp"
+            android:textSize="35sp"
             android:gravity="center"/>
 
             <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="350dp"
-                android:layout_height="400dp"
+                android:layout_width="300dp"
+                android:layout_height="350dp"
                 android:src="@drawable/profile_pic"
                 android:layout_marginHorizontal="20dp"
                 android:foreground="@drawable/card_foreground"

@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.moviehub.MyViewModelFactory;
+import com.example.moviehub.utils.MyViewModelFactory;
 import com.example.moviehub.R;
-import com.example.moviehub.Room;
+import com.example.moviehub.models.Room;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class WaitingRoomActivity extends RoomInterface{

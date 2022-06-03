@@ -11,12 +11,16 @@
     <color name="gray">#787878</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="faded_black">#BF000000</color>
+    <color name="not_so_faded_black">#99000000</color>
     <color name="faded_gray">#66787878</color>
     <color name="gold"> #FFD700</color>
     <color name="purple">#7f00ff</color>
+    <color name="light_gray">#9C9C9C</color>
     <color name="cool_grey">#2d2f31</color>
     <color name="dark_grey">#282828</color>
     <color name="cool_black">#121212</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#FF007F</color>
+    <color name="green">#7cfc00</color>
+    <color name="red">#FF0000</color>
 
 </resources>

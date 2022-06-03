@@ -4,17 +4,20 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.moviehub.Genres;
-import com.example.moviehub.Movies;
+import com.example.moviehub.models.Genres;
+import com.example.moviehub.models.Movies;
 import com.example.moviehub.R;
-import com.example.moviehub.Utils;
+import com.example.moviehub.utils.MyItemDetail;
+import com.example.moviehub.utils.Utils;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
     private List<Movies.Movie> movies;
     private final Context context;
+    private SelectionTracker<Long> selectionTracker;
 
     public SavedMoviesAdapter(Context context) {
         this.context = context;
@@ -40,6 +44,15 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
             holder.title.setText(movie.getTitle());
             holder.review.setText(String.valueOf(movie.getVoteAverage()));
             holder.genre.setText(Genres.findByKey(movie.getGenreIds().get(0)));
+
+            if(selectionTracker != null){
+                boolean visible = selectionTracker.hasSelection();
+
+                holder.genre.setVisibility(visible? View.INVISIBLE : View.VISIBLE);
+                holder.review.setVisibility(visible? View.INVISIBLE : View.VISIBLE);
+                holder.checkBox.setVisibility(visible? View.VISIBLE : View.GONE);
+                holder.checkBox.setChecked(selectionTracker.isSelected(holder.getItemDetails().getSelectionKey()));
+            }
     }
 
     @Override
@@ -49,11 +62,10 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         else return movies.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView title, genre, review;
-
-
+        CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,11 +73,24 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
             title = itemView.findViewById(R.id.txt);
             genre = itemView.findViewById(R.id.genre);
             review = itemView.findViewById(R.id.review);
+            checkBox = itemView.findViewById(R.id.checkbox);
+        }
+
+        public MyItemDetail getItemDetails(){
+            return new MyItemDetail(getAdapterPosition(), movies.get(getAdapterPosition()).getId());
         }
     }
 
     public void setMovies(List<Movies.Movie> movies){
         this.movies = movies;
         notifyDataSetChanged();
+    }
+
+    public List<Movies.Movie> getMovies() {
+        return movies;
+    }
+
+    public void setSelectionTracker(SelectionTracker<Long> selectionTracker) {
+        this.selectionTracker = selectionTracker;
     }
 }

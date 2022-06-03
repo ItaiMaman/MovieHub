@@ -1,9 +1,16 @@
-package com.example.moviehub;
+package com.example.moviehub.home;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,7 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.moviehub.MyBroadcastReceiver;
+import com.example.moviehub.Rooms.FriendsActivity;
+import com.example.moviehub.R;
+import com.example.moviehub.profile.AddEventActivity;
 import com.example.moviehub.profile.ProfileActivity;
+import com.example.moviehub.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -46,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(new PopularFragment());
         fragments.add(new TopRatedFragment());
         adapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragments);
+        createNotificationChannel();
 
         viewPager.setAdapter(adapter);
         viewPager.setUserInputEnabled(false);
@@ -81,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 else if(pos == 1){
                     ((TopRatedFragment) adapter.getFragment(pos)).rewind();
                 }
+                Intent intent = new Intent(MainActivity.this, MyBroadcastReceiver.class);
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast
+                        (MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE );
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP,  System.currentTimeMillis() + 3000, pendingIntent);
+
             }
         });
 
@@ -107,5 +127,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            String name = Utils.NOTIFICATION_CHANNEL;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(name,name,importance);
+            channel.setDescription("temp");
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+
+        }
     }
 }

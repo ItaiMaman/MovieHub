@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.utils;
 
 import android.app.Application;
 

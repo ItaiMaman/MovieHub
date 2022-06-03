@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.home;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

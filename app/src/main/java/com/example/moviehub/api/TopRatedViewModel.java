@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.moviehub.FirebaseSource;
-import com.example.moviehub.Movies;
+import com.example.moviehub.models.Movies;
 
 import java.util.List;
 

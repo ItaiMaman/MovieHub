@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.utils;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
+import com.example.moviehub.R;
 
 public class CustomProgressDialog extends Dialog {
     public CustomProgressDialog(@NonNull Context context, String string) {

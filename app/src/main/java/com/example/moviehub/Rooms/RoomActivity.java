@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 
 import com.example.moviehub.R;
-import com.example.moviehub.Room;
+import com.example.moviehub.models.Room;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 

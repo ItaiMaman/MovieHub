@@ -5,22 +5,30 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.moviehub.AddEventActivity;
-import com.example.moviehub.CardsAdapter;
-import com.example.moviehub.CustomProgressDialog;
-import com.example.moviehub.Movies;
-import com.example.moviehub.MyViewModelFactory;
+import com.example.moviehub.MyBroadcastReceiver;
+import com.example.moviehub.VibrationService;
+import com.example.moviehub.home.MainActivity;
+import com.example.moviehub.profile.AddEventActivity;
+import com.example.moviehub.home.CardsAdapter;
+import com.example.moviehub.utils.CustomProgressDialog;
+import com.example.moviehub.models.Movies;
+import com.example.moviehub.utils.MyViewModelFactory;
 import com.example.moviehub.R;
-import com.example.moviehub.Utils;
+import com.example.moviehub.utils.Utils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,7 +37,11 @@ import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.Direction;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.TimeZone;
 
 public class SwipeMatchActivity extends AppCompatActivity implements CardStackListener {
 
@@ -40,18 +52,23 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
     Toolbar toolbar;
     String id;
     boolean host;
-    MaterialAlertDialogBuilder leaveDialog, roomClosedDialog;
+    MaterialAlertDialogBuilder leaveDialog, roomClosedDialog, eventSetDialog;
     HashMap<String, HashMap<String, Long>> swiped;
     int users;
     FloatingActionButton fab;
     Dialog matchDialog;
     boolean closeRoom;
+    Movies.Movie match;
+    CustomProgressDialog progressDialog;
+    List<String> friends;
+    boolean gotDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_match);
 
+        gotDate = false;
         closeRoom = true;
         id = getIntent().getStringExtra("id");
         host = getIntent().getBooleanExtra("host", false);
@@ -87,7 +104,15 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
 
         viewModel.getMovies().observe(this, movies -> adapter.setMovies(movies.getMovies()));
 
-        viewModel.getUsers().observe(this, i -> users = i + 1);
+        viewModel.getUsers().observe(this, i -> {
+            if(i != null){
+                friends = i;
+                Log.d("tag", "the list : "  + friends.toString());
+                users = i.size();
+            }
+            else
+                finish();
+        });
 
         viewModel.getSwiped().observe(this, map -> {
             if (map != null) {
@@ -101,19 +126,18 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
 
             }
         });
-        CustomProgressDialog dialog = new CustomProgressDialog(this, "Waiting for host to set event date");
+        progressDialog = new CustomProgressDialog(this, "Waiting for host to set event date");
 
         if (!host)
             viewModel.getActive().observe(this, active -> {
-                if (active == null) roomClosedDialog.show();
-                else if(!active){
-                    dialog.show();
+                if (active == null ) {
+                    if(!gotDate)
+                    roomClosedDialog.show();
                 }
-                else {
-                    dialog.dismiss();
-                    if(!host){
-                        Toast.makeText(this, "Host chose to keep swiping", Toast.LENGTH_SHORT).show();
-                    }
+                else if (!active) {
+                    progressDialog.show();
+                } else {
+                    progressDialog.dismiss();
                 }
             });
 
@@ -126,7 +150,7 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
         ImageView img = matchDialog.findViewById(R.id.img);
         MaterialButton setEvent = matchDialog.findViewById(R.id.add_event);
 
-        if(!host){
+        if (!host) {
             keepSwiping.setVisibility(View.GONE);
             setEvent.setVisibility(View.GONE);
         }
@@ -155,32 +179,64 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
             @Override
             public void onChanged(Integer integer) {
                 if (integer != null && integer != 0) {
-                    Movies.Movie movie = null;
+                    match = null;
 
-                    for (Movies.Movie m : adapter.getMovies()) {
-                        if (m.getId().equals(integer)) {
-                            movie = m;
-                            break;
+                    if (adapter.getMovies() != null)
+                        for (Movies.Movie m : adapter.getMovies()) {
+                            if (m.getId().equals(integer)) {
+                                match = m;
+                                break;
+                            }
                         }
-                    }
 
-                    Glide.with(SwipeMatchActivity.this).load(Utils.IMAGE_URL + movie.getPosterPath()).centerCrop().into(img);
-                    title.setText(movie.getTitle());
+                    Glide.with(SwipeMatchActivity.this).load(Utils.IMAGE_URL + match.getPosterPath()).centerCrop().into(img);
+                    title.setText(match.getTitle());
+                    startService(new Intent(getApplicationContext(), VibrationService.class));
                     matchDialog.show();
 
-                }
-                else
+                } else
                     matchDialog.dismiss();
             }
         });
 
+        eventSetDialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("It's set!")
+                .setPositiveButton("Ok", (dialog, which) -> finish())
+                .setCancelable(false);
 
+        viewModel.getDate().observe(this, new Observer<Date>() {
+            @Override
+            public void onChanged(Date date) {
+                if (date != null) {
+                    gotDate = true;
+
+                    progressDialog.dismiss();
+                    matchDialog.dismiss();
+                    SimpleDateFormat localDateFormat = new SimpleDateFormat("EEE, MMMM dd @ HH:mm");
+                    localDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    String time = localDateFormat.format(date);
+                    eventSetDialog.setMessage("You and your homies are set to watch " + match.getTitle() + " on " + time);
+                    setupNotifications(date);
+                    viewModel.addEvent(date, match, friends);
+                    eventSetDialog.show();
+
+                }
+            }
+        });
 
     }
 
-    private void handleLeave() {
+    private void setupNotifications(Date date) {
+        Intent intent1 = new Intent(getApplicationContext(), MyBroadcastReceiver.class).putExtra("15min", true).putExtra("movieName", match.getTitle());
+        PendingIntent pendingIntent1 = PendingIntent.getBroadcast
+                (getApplicationContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent2 = new Intent(getApplicationContext(), MyBroadcastReceiver.class).putExtra("15min", false).putExtra("movieName", match.getTitle());
+        PendingIntent pendingIntent2 = PendingIntent.getBroadcast
+                (getApplicationContext(), 1, intent2, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-
+        alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime() - 1000 * 60 * 60 * 3 - 1000 * 60 * 15, pendingIntent1);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime() - 1000 * 60 * 60 * 3, pendingIntent2);
     }
 
 
@@ -239,7 +295,7 @@ public class SwipeMatchActivity extends AppCompatActivity implements CardStackLi
 
     @Override
     protected void onStop() {
-        if(host && closeRoom)
+        if (host && closeRoom)
             viewModel.deleteRoom();
         super.onStop();
     }

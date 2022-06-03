@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviehub.R;
-import com.example.moviehub.Room;
+import com.example.moviehub.models.Room;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;

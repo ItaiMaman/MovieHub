@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.startScreens;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.moviehub.R;
+import com.example.moviehub.home.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -136,5 +138,11 @@ public class LoginScreen extends AppCompatActivity {
     public void mySnackbar(String message){
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
         snackbar.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
     }
 }

@@ -5,6 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.moviehub.models.Event;
+import com.example.moviehub.models.Movies;
+import com.example.moviehub.models.Room;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class FirebaseSource {
@@ -83,6 +89,8 @@ public class FirebaseSource {
 
     }
 
+
+
     public String createRoom() {
         DatabaseReference roomRef = rooms.push();
         Room room = new Room(roomRef.getKey(), auth.getUid());
@@ -121,6 +129,8 @@ public class FirebaseSource {
     }
 
     public LiveData<String> getUsername(String uid) {
+        if(uid == null)
+            uid = auth.getUid();
         MutableLiveData<String> username = new MutableLiveData<>();
         FirebaseDatabase.getInstance().getReference("UserData").child(uid).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -178,6 +188,10 @@ public class FirebaseSource {
         return rooms.child(roomId).child("swiped");
     }
 
+    public DatabaseReference getRoomDate(String roomId){
+        return rooms.child(roomId).child("date");
+    }
+
     public void swipeRightMatch(String roomId, int id) {
         rooms.child(roomId).child("swiped").child(String.valueOf(id)).child(auth.getUid()).setValue(id);
     }
@@ -196,6 +210,85 @@ public class FirebaseSource {
 
     public void setActive(String roomId, Boolean bool) {
         rooms.child(roomId).child("running").setValue(bool);
+    }
+
+    public String getEmail() {
+        return auth.getCurrentUser().getEmail();
+    }
+
+
+    public void addEvent(Date date, Movies.Movie movie, List<String> friends){
+        Event event = new Event(date, movie, userdata.push().getKey(), friends);
+        userdata.child("events").child(event.getId()).setValue(event);
+    }
+
+    public LiveData<List<Event>> getEvents(){
+        MutableLiveData<List<Event>> events = new MutableLiveData<>();
+        List<Event> list = new ArrayList<>();
+        userdata.child("events").orderByChild("date/time").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.getValue(Event.class).getDate().getTime() - 1000*60*60*3 > System.currentTimeMillis()){
+                    list.add(snapshot.getValue(Event.class));
+                    events.setValue(list);
+                }
+                else
+                    deleteEvent(snapshot.getValue(Event.class).getId());
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                for(Event e : list){
+                    if(e.getId() == snapshot.getValue(Event.class).getId()){
+                        list.remove(e);
+                        events.setValue(list);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return events;
+    }
+
+    private void deleteEvent(String id) {
+        userdata.child("events").child(id).removeValue();
+    }
+
+    public MutableLiveData<List<String>> getUsernames(List<String> uids){
+        MutableLiveData<List<String>> usernames = new MutableLiveData<>();
+        List<String> list = new ArrayList<>();
+        for(String s : uids){
+            userdata.getParent().child(s).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list.add(snapshot.getValue(String.class));
+                    usernames.setValue(list);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+        return usernames;
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,57 +11,57 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.moviehub.api.TopRatedViewModel;
+import com.example.moviehub.models.Movies;
+import com.example.moviehub.R;
+import com.example.moviehub.api.PopularViewModel;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.Direction;
 
+public class PopularFragment extends Fragment implements CardStackListener {
 
-public class TopRatedFragment extends Fragment implements CardStackListener {
-
-    TopRatedViewModel viewModel;
+    PopularViewModel viewModel;
     CardStackView cardStackView;
     CardStackLayoutManager layoutManager;
     CardsAdapter adapter;
 
-    public TopRatedFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_top_rated, container, false);
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = ViewModelProviders.of(requireActivity()).get(TopRatedViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(PopularViewModel.class);
         cardStackView = view.findViewById(R.id.csv);
-
         adapter = new CardsAdapter(getContext());
         layoutManager = new CardStackLayoutManager(requireContext(), this);
+
         layoutManager.setDirections(Direction.HORIZONTAL);
         layoutManager.setCanScrollVertical(false);
         cardStackView.setAdapter(adapter);
         cardStackView.setLayoutManager(layoutManager);
 
-
-
         viewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<Movies>() {
             @Override
             public void onChanged(Movies movies) {
-                if(movies != null){
+                if (movies != null) {
                     adapter.setMovies(movies.getMovies());
                 }
             }
         });
 
 
+    }
 
+    public PopularFragment() {
+    }
+    
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        return inflater.inflate(R.layout.fragment_popular, container, false);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class TopRatedFragment extends Fragment implements CardStackListener {
 
     }
 
-    public void rewind(){
+    public void rewind() {
         cardStackView.rewind();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.moviehub;
+package com.example.moviehub.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.moviehub.models.Genres;
+import com.example.moviehub.models.Movies;
+import com.example.moviehub.R;
+import com.example.moviehub.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

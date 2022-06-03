@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.moviehub.FirebaseSource;
-import com.example.moviehub.Movies;
+import com.example.moviehub.models.Movies;
 
 import java.util.List;
 
@@ -24,5 +24,9 @@ public class SavedMoviesViewModel extends AndroidViewModel {
 
     public LiveData<List<Movies.Movie>> getMovies() {
         return movies;
+    }
+
+    public void deleteMovie(int id){
+        firebaseSource.deleteMovie(id);
     }
 }

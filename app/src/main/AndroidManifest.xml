@@ -3,17 +3,27 @@
     package="com.example.moviehub">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
+        android:name=".utils.FirebaseApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieHub">
+
+        <receiver
+            android:name=".MyBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
         <activity
             android:name="com.example.moviehub.Rooms.SwipeMatchActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.example.moviehub.Rooms.WaitingRoomActivity"
             android:exported="false" />
@@ -21,18 +31,18 @@
             android:name="com.example.moviehub.Rooms.RoomActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.moviehub.AddEventActivity"
+            android:name="com.example.moviehub.profile.AddEventActivity"
             android:exported="false" />
         <activity
             android:name="com.example.moviehub.profile.ProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.moviehub.FriendsActivity"
+            android:name="com.example.moviehub.Rooms.FriendsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.moviehub.SplashScreen"
+            android:name="com.example.moviehub.startScreens.SplashScreen"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -42,17 +52,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.moviehub.SignUpScreen"
+            android:name="com.example.moviehub.startScreens.SignUpScreen"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.moviehub.LoginScreen"
+            android:name="com.example.moviehub.startScreens.LoginScreen"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.moviehub.MainActivity"
+            android:name="com.example.moviehub.home.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
+        <service android:name=".VibrationService"/>
+
     </application>
+
 
 </manifest>
