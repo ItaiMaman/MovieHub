@@ -102,6 +102,7 @@ public class PopularFragment extends Fragment implements CardStackListener {
     }
 
     public void rewind() {
-        cardStackView.rewind();
+        if(cardStackView != null)
+            cardStackView.rewind();
     }
 }

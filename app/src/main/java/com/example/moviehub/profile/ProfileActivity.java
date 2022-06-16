@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.moviehub.home.FragmentAdapter;
 import com.example.moviehub.R;
+import com.example.moviehub.startScreens.LoginScreen;
 import com.example.moviehub.startScreens.SplashScreen;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -83,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(ProfileActivity.this, SplashScreen.class));
+                        startActivity(new Intent(ProfileActivity.this, LoginScreen.class));
                     }
                 }).setNegativeButton("Cancel", (dialog, which) -> {});
 

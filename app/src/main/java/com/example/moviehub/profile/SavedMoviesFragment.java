@@ -26,6 +26,7 @@ import com.example.moviehub.models.Movies;
 import com.example.moviehub.utils.MyItemKeyProvider;
 import com.example.moviehub.utils.MyItemLookup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,7 +88,9 @@ public class SavedMoviesFragment extends Fragment {
                     selectionTracker.setItemsSelected(itemKeyProvider.getKeyIterable(), !allSelected);
                     return true;
                 } else if (item.getItemId() == R.id.delete) {
-                    for (Long aLong : (Iterable<Long>) selectionTracker.getSelection()) {
+                    ArrayList<Long> set = new ArrayList<>();
+                    selectionTracker.getSelection().iterator().forEachRemaining(set::add);
+                    for (Long aLong : set) {
                         int id = aLong.intValue();
                         if (id != -1){
                             adapter.notifyItemRemoved(itemKeyProvider.getPosition(aLong));
